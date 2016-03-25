@@ -4,8 +4,23 @@ var gulp = require('gulp'),
     gp_uglify = require('gulp-uglify'),
     clean = require('gulp-clean'),
     del = require('del'),
+    angularbuilder = require("gulp-angular-builder"),
     runSequence = require('run-sequence').use(gulp);
 
+var destinationFolder = 'static';
+
+gulp.task('html', function(){
+    return gulp.src('index.html')
+        .pipe(gulp.dest(destinationFolder));
+});
+
+gulp.task("html-build-files", function () {
+    return gulp.src([
+        "./app/**/*.+(html)"
+    ]).pipe(
+        gulp.dest(destinationFolder)
+    );
+});
 
 var js_array = [
     "bower_components/angular/angular.js",
@@ -20,7 +35,7 @@ gulp.task('js', function(){
         .pipe(gulp.dest('dist'))
         .pipe(gp_rename('app.js'))
         //.pipe(gp_uglify())
-        .pipe(gulp.dest('static/js'));
+        .pipe(gulp.dest(destinationFolder+'/js'));
 });
 
 var css_array = [
@@ -29,12 +44,12 @@ var css_array = [
 gulp.task('css', function(){
     return gulp.src(css_array)
         .pipe(gp_concat('app.css'))
-        .pipe(gulp.dest('static/css'));
+        .pipe(gulp.dest(destinationFolder+'/css'));
 });
 
 gulp.task('fonts', function(){
     return gulp.src('bower_components/font-awesome/fonts/*')
-        .pipe(gulp.dest('static/fonts'));
+        .pipe(gulp.dest(destinationFolder+'/fonts'));
 });
 
 gulp.task('clean-tmp', function(){
@@ -42,7 +57,7 @@ gulp.task('clean-tmp', function(){
 });
 
 gulp.task('default', function() {
-    runSequence('js', 'css', 'fonts', 'clean-tmp', function(){
+    runSequence('html', 'html-build-files', 'js', 'css', 'fonts', 'clean-tmp', function(){
         console.log("Done");
     });
 });

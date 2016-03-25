@@ -15,7 +15,7 @@ angular.module('angularjs-client-template').config(['$stateProvider', '$urlRoute
     $stateProvider
         .state('home', {
             url:"/home",
-            templateUrl:"app/controllers/home/home.html",
+            templateUrl:"controllers/home/home.html",
             controller:"HomeController"
         })
         // .state('dashboard', {
